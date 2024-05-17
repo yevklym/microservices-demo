@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.12.3-slim@sha256:2be8daddbb82756f7d1f2c7ece706aadcb284bf6ab6d769ea695cc3ed6016743 as base
+FROM python:3.12.3-slim as base
 
 FROM base as builder
 
 COPY requirements.txt .
 
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev
+    
 RUN pip install --prefix="/install" -r requirements.txt
 
 FROM base
